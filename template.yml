@@ -4,7 +4,7 @@ Description: API Gateway to Kinesis Data Stream to AWS Lambda
 
 Resources:
   # Define an AWS Kinesis Data Stream
-  MyStream2:
+  MyStream:
     Type: AWS::Kinesis::Stream
     Properties:
       ShardCount: 2
@@ -21,7 +21,7 @@ Resources:
         Stream:
           Type: Kinesis
           Properties:
-            Stream: !GetAtt MyStream2.Arn
+            Stream: !GetAtt MyStream.Arn
             StartingPosition: TRIM_HORIZON
             BatchSize: 100
             
@@ -29,4 +29,4 @@ Outputs:
   # Kinesis Data Stream name for data producers to use
   KinesisStream:
     Description: Kinesis Data Stream name
-    Value: !Ref MyStream2
+    Value: !Ref MyStream
