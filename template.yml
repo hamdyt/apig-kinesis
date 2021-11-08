@@ -20,13 +20,13 @@ Resources:
         AllowMethods: "'PUT, GET, DELETE, OPTIONS'"
         AllowHeaders: "'Content-Type', 'Authorization', 'X-Forwarded-For', 'X-Api-Key', 'X-Amz-Date', 'X-Amz-Security-Token'"
         AllowOrigin: "'*'"
-        
+
   # Define an AWS Kinesis Data Stream
-  MyStream:
+  MyKinesisStream:
     Type: AWS::Kinesis::Stream
     Properties:
       ShardCount: 2
-      Name: KinesisStream
+      Name: MyStream
   
   # Define an AWS Lambda and attach it to the application consumer
   ApplicationFunction:
@@ -40,7 +40,7 @@ Resources:
         Stream:
           Type: Kinesis
           Properties:
-            Stream: !GetAtt MyStream.Arn
+            Stream: !GetAtt MyKinesisStream.Arn
             StartingPosition: TRIM_HORIZON
             BatchSize: 100
             
@@ -48,4 +48,4 @@ Outputs:
   # Kinesis Data Stream name for data producers to use
   KinesisStream:
     Description: Kinesis Data Stream name
-    Value: !Ref MyStream
+    Value: !Ref MyKinesisStream
