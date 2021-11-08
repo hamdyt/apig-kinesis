@@ -36,6 +36,7 @@ Resources:
       Runtime: python3.8
       Handler: app.lambda_Handler
       Tracing: Active
+      FunctionName: MyKDSFunction
       Events:
         Stream:
           Type: Kinesis
