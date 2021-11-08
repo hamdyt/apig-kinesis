@@ -1,6 +1,6 @@
 openapi: "3.0.1"
 info:
-  title: "KinesisProxy"
+  title: "KinesisProxy2"
   description: "APIGW to Kinesis Proxy"
   version: "2021-11-07T08:21:24Z"
 servers:
