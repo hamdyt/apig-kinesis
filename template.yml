@@ -3,6 +3,20 @@ Transform: AWS::Serverless-2016-10-31
 Description: API Gateway to Kinesis Data Stream to AWS Lambda
 
 Resources:
+  # Define REST API for Kinesis data streams using OpenAPI3.0
+  KinesisProxy2:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      EndpointConfiguration:
+        Type: REGIONAL
+      TracingEnabled: true
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ./src/api/api.yaml
+  
   # Define an AWS Kinesis Data Stream
   MyStream:
     Type: AWS::Kinesis::Stream
