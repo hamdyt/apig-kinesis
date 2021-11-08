@@ -16,7 +16,11 @@ Resources:
           Name: AWS::Include
           Parameters:
             Location: ./src/api/api.yaml
-  
+      Cors:
+        AllowMethods: "'PUT, GET, DELETE, OPTIONS'"
+        AllowHeaders: "'Content-Type', 'Authorization', 'X-Forwarded-For', 'X-Api-Key', 'X-Amz-Date', 'X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+        
   # Define an AWS Kinesis Data Stream
   MyStream:
     Type: AWS::Kinesis::Stream
