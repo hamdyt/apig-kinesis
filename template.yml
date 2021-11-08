@@ -22,6 +22,7 @@ Resources:
     Type: AWS::Kinesis::Stream
     Properties:
       ShardCount: 2
+      Name: KinesisStream
   
   # Define an AWS Lambda and attach it to the application consumer
   ApplicationFunction:
