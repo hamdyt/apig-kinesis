@@ -2,12 +2,17 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: API Gateway to Kinesis Data Stream to AWS Lambda
 
+Globals:
+  Function:
+    MemorySize: 256
+    Timeout: 15
+
 Resources:
   # Define REST API for Kinesis data streams using OpenAPI3.0
-  KinesisProxy2:
+  KinesisProxyApi:
     Type: AWS::Serverless::Api
+    DependsOn: ApiKinesisExecutionRole
     Properties:
-      StageName: dev
       EndpointConfiguration:
         Type: REGIONAL
       TracingEnabled: true
@@ -21,17 +26,34 @@ Resources:
         AllowHeaders: "'Content-Type', 'Authorization', 'X-Forwarded-For', 'X-Api-Key', 'X-Amz-Date', 'X-Amz-Security-Token'"
         AllowOrigin: "'*'"
 
-  # Define an AWS Kinesis Data Stream
+  # Define AWS Kinesis Data Stream
   MyKinesisStream:
     Type: AWS::Kinesis::Stream
     Properties:
       ShardCount: 2
       Name: MyStream
   
+  ApiKinesisExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+            Action: "sts:AssumeRole"
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+        - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
+
   # Define an AWS Lambda and attach it to the application consumer
   ApplicationFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Description: Handler for Lambda function that process Kinesis data streams
       CodeUri: src/
       Runtime: python3.8
       Handler: app.lambda_Handler
@@ -44,7 +66,7 @@ Resources:
             Stream: !GetAtt MyKinesisStream.Arn
             StartingPosition: TRIM_HORIZON
             BatchSize: 100
-            
+  
 Outputs:
   # Kinesis Data Stream name for data producers to use
   KinesisStream:
