@@ -15,7 +15,7 @@ Resources:
     Type: AWS::Serverless::Api
     DependsOn: ApiKinesisExecutionRole
     Properties:
-      StageName: dev
+      StageName: prod
       EndpointConfiguration:
         Type: REGIONAL
       TracingEnabled: true
