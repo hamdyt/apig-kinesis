@@ -34,9 +34,10 @@ paths:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
         type: "aws"
-        credentials: "arn:aws:iam::779683736878:role/KinesisAPIGIntegration"
+        credentials:
+          Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:kinesis:action/GetShardIterator"
+        uri: "arn:aws:apigateway:${AWS::Region}:kinesis:action/GetShardIterator"
         responses:
           default:
             statusCode: "200"
