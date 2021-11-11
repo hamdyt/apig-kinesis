@@ -114,9 +114,10 @@ paths:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
         type: "aws"
-        credentials: "arn:aws:iam::779683736878:role/KinesisAPIGIntegration"
+        credentials:
+          Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:kinesis:action/GetRecords"
+        uri: "arn:aws:apigateway:${AWS::Region}:kinesis:action/GetRecords"
         responses:
           default:
             statusCode: "200"
@@ -142,9 +143,10 @@ paths:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
         type: "aws"
-        credentials: "arn:aws:iam::779683736878:role/KinesisAPIGIntegration"
+        credentials:
+          Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:kinesis:action/PutRecords"
+        uri: "arn:aws:apigateway:${AWS::Region}:kinesis:action/PutRecords"
         responses:
           default:
             statusCode: "200"
@@ -215,9 +217,10 @@ paths:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
         type: "aws"
-        credentials: "arn:aws:iam::779683736878:role/KinesisAPIGIntegration"
+        credentials:
+          Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:kinesis:action/DescribeStream"
+        uri: "arn:aws:apigateway:${AWS::Region}:kinesis:action/DescribeStream"
         responses:
           default:
             statusCode: "200"
@@ -244,9 +247,10 @@ paths:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
         type: "aws"
-        credentials: "arn:aws:iam::779683736878:role/KinesisAPIGIntegration"
+        credentials:
+          Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:kinesis:action/PutRecord"
+        uri: "arn:aws:apigateway:${AWS::Region}:kinesis:action/PutRecord"
         responses:
           default:
             statusCode: "200"
@@ -304,9 +308,10 @@ paths:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
         type: "aws"
-        credentials: "arn:aws:iam::779683736878:role/KinesisAPIGIntegration"
+        credentials:
+          Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:kinesis:action/ListStreams"
+        uri: "arn:aws:apigateway:${AWS::Region}:kinesis:action/ListStreams"
         responses:
           default:
             statusCode: "200"
