@@ -72,3 +72,8 @@ Outputs:
   KinesisStream:
     Description: Kinesis Data Stream name
     Value: !Ref MyKinesisStream
+    
+  APIEndpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${KinesisProxyApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+    
