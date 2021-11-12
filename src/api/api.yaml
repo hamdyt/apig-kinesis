@@ -7,7 +7,7 @@ servers:
 - url: "https://d3rcepd6u1.execute-api.us-east-1.amazonaws.com/{basePath}"
   variables:
     basePath:
-      default: "/prod"
+      default: "/dev"
 paths:
   /streams/{stream-name}/sharditerator:
     get:

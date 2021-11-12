@@ -6,7 +6,7 @@ Description: API Gateway to Kinesis Data Stream to AWS Lambda
 
 Globals:
   Function:
-    MemorySize: 256
+    MemorySize: 2048
     Timeout: 15
 
 Resources:
@@ -15,7 +15,7 @@ Resources:
     Type: AWS::Serverless::Api
     DependsOn: ApiKinesisExecutionRole
     Properties:
-      StageName: prod
+      StageName: dev
       EndpointConfiguration:
         Type: REGIONAL
       TracingEnabled: true
@@ -66,7 +66,34 @@ Resources:
             Stream: !GetAtt MyKinesisStream.Arn
             StartingPosition: TRIM_HORIZON
             BatchSize: 100
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+      BucketName: serverless-capstone
+    DeletionPolicy: Retain
   
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref S3Bucket
+                - /*
+      Bucket: !Ref S3Bucket
+    
 Outputs:
   # Kinesis Data Stream name for data producers to use
   KinesisStream:
@@ -77,3 +104,16 @@ Outputs:
     Description: "API Gateway endpoint URL"
     Value: !Sub "https://${KinesisProxyApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
     
+  WebsiteURL:
+    Value: !GetAtt 
+      - S3Bucket
+      - WebsiteURL
+    Description: URL for website hosted on S3
+  S3BucketSecureURL:
+    Value: !Join 
+      - ''
+      - - 'https://'
+        - !GetAtt 
+          - S3Bucket
+          - DomainName
+    Description: Name of S3 bucket to hold website content
