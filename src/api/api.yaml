@@ -4,7 +4,7 @@ info:
   description: "API Gateway to Kinesis Proxy"
   version: "2021-11-07T08:21:24Z"
 servers:
-- url: "https://d3rcepd6u1.execute-api.us-east-1.amazonaws.com/{basePath}"
+- url: "https://iegph4i3m1.execute-api.us-east-1.amazonaws.com/{basePath}"
   variables:
     basePath:
       default: "/dev"
