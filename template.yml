@@ -56,7 +56,7 @@ Resources:
       Description: Handler for Lambda function that process Kinesis data streams
       CodeUri: src/
       Runtime: python3.8
-      Handler: app.lambda_Handler
+      Handler: lambda_Handler
       Tracing: Active
       FunctionName: MyKDSFunction
       Events:
