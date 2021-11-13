@@ -9,7 +9,7 @@ def lambda_handler(event, context):
                 print(event)
                 #1. Iterate over each record
                 
-                #print("test")
+                #print("test1")
                 
                 try:
                                 for ddbRecord in event['Records']:
@@ -26,3 +26,4 @@ def lambda_handler(event, context):
                                 print(e)
                                 print('------------------------')
                                 return "Error"
+                                
