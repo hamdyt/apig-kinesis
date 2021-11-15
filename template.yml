@@ -95,7 +95,7 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
-      BucketName: serverless-capstone.com
+      BucketName: serverless-capstone
     
   BucketPolicy:
     Type: AWS::S3::BucketPolicy
