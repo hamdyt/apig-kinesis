@@ -6,7 +6,7 @@ Description: API Gateway to Kinesis Data Stream to AWS Lambda
 
 Globals:
   Function:
-    MemorySize: 2048
+    MemorySize: 512
     Timeout: 100
 
 Resources:
@@ -31,7 +31,7 @@ Resources:
     Type: AWS::Kinesis::Stream
     Properties:
       RetentionPeriodHours: 168
-      ShardCount: 2
+      ShardCount: 1
       Name: MyStream
   
   # Define API Gateway role to access Kinesis actions
@@ -91,7 +91,6 @@ Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
@@ -107,7 +106,7 @@ Resources:
           - Sid: PublicReadForGetBucketObjects
             Effect: Allow
             Principal:
-              AWS: arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E2XJRBDBYKA248
+              AWS: arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E20VFMRKQ9DBG5
             Action: 's3:GetObject'
             Resource: !Join 
               - ''
@@ -142,7 +141,7 @@ Outputs:
     
   APIEndpoint:
     Description: "API Gateway endpoint URL"
-    Value: !Sub "https://${KinesisProxy}.execute-api.${AWS::Region}.amazonaws.com/prod"
+    Value: !Sub "https://${KinesisProxy}.execute-api.${AWS::Region}.amazonaws.com/dev"
     
   WebsiteURL:
     Value: !GetAtt 
