@@ -61,7 +61,7 @@ $(document).ready(function(){
 
     $.ajax({
     type: 'PUT',
-    url: 'https://92q9jkt6rg.execute-api.us-east-1.amazonaws.com/dev/streams/MyStream/record',
+    url: 'https://jbqx7gj90d.execute-api.us-east-1.amazonaws.com/dev/streams/MyStream/record',
     contentType: 'application/json',
         // data: '{  "Data": "some data", "PartitionKey": "some key" }', // access in body
         data: input
@@ -97,7 +97,7 @@ async function getKinesisRecordsFromDynamoDB() {
 
 async function getDataFromDynamoDB() {
     let result;
-    let url = `https://92q9jkt6rg.execute-api.us-east-1.amazonaws.com/dev/dynamodb`
+    let url = `https://jbqx7gj90d.execute-api.us-east-1.amazonaws.com/dev/dynamodb`
 
     console.log(url);
 
@@ -134,8 +134,8 @@ async function getShardIterator() {
 
     $.ajax({
     type: 'GET',
-    url: 'https://92q9jkt6rg.execute-api.us-east-1.amazonaws.com/dev/streams/' + document.getElementById('streamName').value + '/sharditerator?shard-id=shardId-000000000000',
-    // url: 'https://92q9jkt6rg.execute-api.us-east-1.amazonaws.com/dev/streams/MyStream/sharditerator?shard-id=shardId-000000000000',
+    url: 'https://jbqx7gj90d.execute-api.us-east-1.amazonaws.com/dev/streams/' + document.getElementById('streamName').value + '/sharditerator?shard-id=shardId-000000000000',
+    // url: 'https://jbqx7gj90d.execute-api.us-east-1.amazonaws.com/dev/streams/MyStream/sharditerator?shard-id=shardId-000000000000',
     contentType: 'application/json',
         // data: '{  "Data": "some data", "PartitionKey": "some key" }', // access in body
 
