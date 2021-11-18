@@ -2,15 +2,20 @@ openapi: "3.0.1"
 info:
   title: "KinesisProxy"
   description: "API Gateway to Kinesis Proxy"
-  version: "2021-11-07T08:21:24Z"
+  version: "2021-11-17T22:20:27Z"
 servers:
-- url: "https://jbqx7gj90d.execute-api.us-east-1.amazonaws.com/{basePath}"
+- url: "https://92q9jkt6rg.execute-api.us-east-1.amazonaws.com/{basePath}"
   variables:
     basePath:
       default: "/dev"
 paths:
   /dynamodb:
     get:
+      parameters:
+      - name: "table-name"
+        in: "query"
+        schema:
+          type: "string"
       responses:
         "200":
           description: "200 response"
@@ -23,7 +28,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "aws"
         credentials:
           Fn::Sub: "${ApiDynamoDBExecutionRole.Arn}"
         httpMethod: "POST"
@@ -34,8 +38,10 @@ paths:
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
-          application/json: "{\n    \"TableName\": \"KinesisStreamData\"\n}\n"
+          application/json: "{\n    \"TableName\": \"$input.params('table-name')\"\
+            \n}\n"
         passthroughBehavior: "when_no_templates"
+        type: "aws"
     options:
       responses:
         "200":
@@ -55,17 +61,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "mock"
         responses:
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
+        type: "mock"
   /streams/{stream-name}/sharditerator:
     get:
       parameters:
@@ -90,7 +96,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "aws"
         credentials:
           Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
@@ -107,6 +112,7 @@ paths:
             \    \"ShardIteratorType\": \"TRIM_HORIZON\",\n    \"StreamName\": \"\
             $input.params('stream-name')\"\n}"
         passthroughBehavior: "when_no_templates"
+        type: "aws"
     options:
       parameters:
       - name: "stream-name"
@@ -132,27 +138,57 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "mock"
         responses:
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type',\
-                \ 'Authorization', 'X-Forwarded-For', 'X-Api-Key', 'X-Amz-Date', 'X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
-            responseTemplates:
-              application/json: "{}\n"
         requestTemplates:
-          application/json: "{\n  \"statusCode\" : 200\n}\n"
+          application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
+        type: "mock"
   /streams/{stream-name}/records:
     get:
       parameters:
-      - name: "Shard-Iterator"
-        in: "query"
+      - name: "stream-name"
+        in: "path"
+        required: true
         schema:
           type: "string"
+      - name: "Shard-Iterator"
+        in: "header"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:${AWS::Region}:kinesis:action/GetRecords"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\n    \"ShardIterator\": \"$util.escapeJavaScript($input.params().header.get('Shard-Iterator'))\"\
+            \n}"
+        passthroughBehavior: "when_no_templates"
+        type: "aws"
+    put:
+      parameters:
       - name: "stream-name"
         in: "path"
         required: true
@@ -170,36 +206,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "aws"
-        credentials:
-          Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
-        httpMethod: "POST"
-        uri: "arn:aws:apigateway:${AWS::Region}:kinesis:action/GetRecords"
-        responses:
-          default:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-        requestTemplates:
-          application/json: "{\n    \"ShardIterator\": \"$input.params('Shard-Iterator')\"\
-            \n}"
-        passthroughBehavior: "when_no_templates"
-    put:
-      parameters:
-      - name: "stream-name"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: "200 response"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
-      x-amazon-apigateway-integration:
-        type: "aws"
         credentials:
           Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
@@ -207,6 +213,8 @@ paths:
         responses:
           default:
             statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
         requestParameters:
           integration.request.header.Content-Type: "'x-amz-json-1.1'"
         requestTemplates:
@@ -216,6 +224,7 @@ paths:
             ,\n            \"PartitionKey\": \"$elem.partition-key\"\n          }#if($foreach.hasNext),#end\n\
             \        #end\n    ]\n}"
         passthroughBehavior: "when_no_templates"
+        type: "aws"
     options:
       parameters:
       - name: "stream-name"
@@ -244,19 +253,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "mock"
         responses:
           default:
             statusCode: "200"
             responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'PUT, OPTIONS'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Shard-Iterator'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
-            responseTemplates:
-              application/json: "{}\n"
         requestTemplates:
-          application/json: "{\n  \"statusCode\" : 200\n}\n"
+          application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
+        type: "mock"
   /streams/{stream-name}:
     get:
       parameters:
@@ -273,7 +280,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "aws"
         credentials:
           Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
@@ -287,6 +293,7 @@ paths:
           application/json: "{\n    \"StreamName\": \"$input.params('stream-name')\"\
             \n}"
         passthroughBehavior: "when_no_templates"
+        type: "aws"
   /streams/{stream-name}/record:
     put:
       parameters:
@@ -307,7 +314,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "aws"
         credentials:
           Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
@@ -324,6 +330,7 @@ paths:
             ,\n    \"Data\": \"$util.base64Encode($input.json('$.Data'))\",\n    \"\
             PartitionKey\": \"$input.path('$.PartitionKey')\"\n}"
         passthroughBehavior: "when_no_templates"
+        type: "aws"
     options:
       parameters:
       - name: "stream-name"
@@ -344,9 +351,11 @@ paths:
             Access-Control-Allow-Headers:
               schema:
                 type: "string"
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "mock"
         responses:
           default:
             statusCode: "200"
@@ -354,11 +363,10 @@ paths:
               method.response.header.Access-Control-Allow-Methods: "'OPTIONS,PUT'"
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
-            responseTemplates:
-              application/json: "{}\n"
         requestTemplates:
-          application/json: "{\n  \"statusCode\" : 200\n}\n"
+          application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
+        type: "mock"
   /streams:
     get:
       responses:
@@ -369,7 +377,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "aws"
         credentials:
           Fn::Sub: "${ApiKinesisExecutionRole.Arn}"
         httpMethod: "POST"
@@ -382,8 +389,20 @@ paths:
         requestTemplates:
           application/json: "{}"
         passthroughBehavior: "when_no_templates"
+        type: "aws"
 components:
   schemas:
     Empty:
       title: "Empty Schema"
       type: "object"
+x-amazon-apigateway-gateway-responses:
+  DEFAULT_4XX:
+    responseParameters:
+      gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+      gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+      gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+  DEFAULT_5XX:
+    responseParameters:
+      gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+      gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+      gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"

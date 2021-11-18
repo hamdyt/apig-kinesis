@@ -32,7 +32,7 @@ Resources:
     Properties:
       RetentionPeriodHours: 168
       ShardCount: 1
-      Name: MyStream
+      Name: SoccerPlayersStream
   
   # Define API Gateway role to access Kinesis actions
   ApiKinesisExecutionRole:
@@ -77,7 +77,7 @@ Resources:
       Runtime: python3.8
       Handler: lambda_function.lambda_handler
       Tracing: Active
-      FunctionName: MyStreamFunction
+      FunctionName: SoccerPlayerStreamFunction
       Policies:
       - AmazonDynamoDBFullAccess
       Events:
@@ -118,7 +118,7 @@ Resources:
   DynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: KinesisStreamData
+      TableName: SoccerPlayersStream
       # A list of attributes that describe the key schema for the DynamoDB table.
       AttributeDefinitions:
         - AttributeName: pk
