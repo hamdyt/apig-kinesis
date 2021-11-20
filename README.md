@@ -27,12 +27,12 @@ The following architecture diagram shows the end to end integration flow.
 -	Change directory to apig-kinesis directory:
 -	From the command line, use AWS SAM to deploy the AWS resources for the pattern as specified in the template.yml file:
           `sam deploy --guided`
-	During the prompts:
+-	During the prompts:
 -   	    Enter a stack name
 -	    Enter the desired AWS Region
 -	    Allow SAM CLI to create IAM roles with the required permissions.
-Once you have run sam deploy -guided mode once and saved arguments to a configuration file (samconfig.toml), you can use sam deploy in future to use these defaults.
-7.	Note the outputs from the SAM deployment process. These contain the resource names and/or ARNs which are used for testing.
+- Once you have run sam deploy -guided mode once and saved arguments to a configuration file (samconfig.toml), you can use sam deploy in future to use these defaults.
+-	Note the outputs from the SAM deployment process. These contain the resource names and/or ARNs which are used for testing.
 
 # Front-end deployment
 The sam deploy command creates several resources. One of the resources is an S3 bucket you will need to upload the html client to the S3 bucket (Serverless-capstone).
