@@ -8,7 +8,7 @@ Important: this application uses various AWS services and there are costs associ
 
 # Requirements
 - This site was built using [GitHub Pages](https://pages.github.com/).
-- [Create an AWS account] (https://portal.aws.amazon.com/billing/signup?redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start). if you do not already have one and log in. The IAM user that you use must have sufficient permissions to make necessary AWS service calls and manage AWS  resources.
+- Create an AWS account [AWS Account](https://portal.aws.amazon.com/billing/signup?redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start). if you do not already have one and log in. The IAM user that you use must have sufficient permissions to make necessary AWS service calls and manage AWS  resources.
 - AWS CLI installed and configured
 - Git Installed
 - AWS Serverless Application Model (AWS SAM) installed
