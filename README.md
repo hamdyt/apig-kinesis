@@ -23,25 +23,25 @@ The following architecture diagram shows the end to end integration flow.
 
 # Deployment Instructions
 -	Create a new directory, navigate to that directory in a terminal and clone the GitHub repository:
--	Use `git clone` command https://github.com/hamdyt/apig-kinesis
+-	Clone the repo using `git clone` command https://github.com/hamdyt/apig-kinesis
 -	Change directory to apig-kinesis directory:
 -	From the command line, use AWS SAM to deploy the AWS resources for the pattern as specified in the template.yml file:
           `sam deploy --guided`
--	During the prompts:
--   	    Enter a stack name
--	    Enter the desired AWS Region
--	    Allow SAM CLI to create IAM roles with the required permissions.
-- Once you have run sam deploy -guided mode once and saved arguments to a configuration file (samconfig.toml), you can use sam deploy in future to use these defaults.
+-	During the prompts:     
+   	Enter a stack name        
+         	  Enter the desired AWS Region
+		       	   and allow SAM CLI to create IAM roles with the required permissions.
+- Once you have run `sam deploy --guided` mode once and saved arguments to a configuration file (samconfig.toml), you can use sam deploy in future to use these defaults.
 -	Note the outputs from the SAM deployment process. These contain the resource names and/or ARNs which are used for testing.
 
 # Front-end deployment
 The sam deploy command creates several resources. One of the resources is an S3 bucket you will need to upload the html client to the S3 bucket (Serverless-capstone).
-Please follow the instructions found here to upload the client objects
-https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html
+Please follow the instructions found here to [upload the client objects](
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html)
 
 
 # Testing
-Use CloudFront to test the application by going to https://<cloudfront domain name>/index.html. You should see the following screen
+Use CloudFront to test the application by going to `https://cloudfront domain name/index.html`. You should see the following screen
 	
   ![image](https://user-images.githubusercontent.com/20010017/142715925-709d3b4b-28a2-44a0-8715-def9203810ea.png)
 
@@ -49,10 +49,11 @@ Use CloudFront to test the application by going to https://<cloudfront domain na
 
 This simple web app will allow for ingesting data into Kinesis Data Stream using REST API calls via the Amazon API Gateway. The client will also read data inserted into DynamoDB and display the results.
 To test the integration please enter the following
-1.	The Kinesis Data Stream name: SoccerPlayersStream
-2.	In the Partition Key field enter any key of type string (i.e. Key001)
-3.	In the Data field enter any sample data (i.e. Hello World)
-4.	Click the Publish button. This will insert the data into Kinesis Data Streams
-5.	In the section entitled - Get Records from Kinesis- Click on the Read button. You should see the partition key and the data text you entered along with the creation time. This data is being retrieved from DynamoDB table.
+-	The Kinesis Data Stream name: SoccerPlayersStream
+-	In the Partition Key field enter any key of type string (i.e. Key001)
+-	In the Data field enter any sample data (i.e. Hello World)
+-	Click the Publish button. This will insert the data into Kinesis Data Streams
+-	In the section entitled - Get Records from Kinesis- Click on the Read button. You should see the partition key and the data text you entered along with the creation time. This data is being retrieved from DynamoDB table.
 
 # Clean Up
+Delete the stack by issuing the following command `aws cloudformation delete-stack --stack-name STACK_NAME`
