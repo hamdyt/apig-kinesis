@@ -7,11 +7,11 @@ This pattern creates an Amazon API Gateway, AWS Kinesis Data Stream, an AWS Lamb
 Important: this application uses various AWS services and there are costs associated with these services after the Free Tier usage - please see the AWS Pricing page for details. You are responsible for any AWS costs incurred. No warranty is implied in this example.
 
 # Requirements
-- This site was built using [GitHub Pages](https://pages.github.com/).
-- Create an AWS account [AWS Account](https://portal.aws.amazon.com/billing/signup?redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start). if you do not already have one and log in. The IAM user that you use must have sufficient permissions to make necessary AWS service calls and manage AWS  resources.
-- AWS CLI installed and configured
-- Git Installed
-- AWS Serverless Application Model (AWS SAM) installed
+
+- Create an [AWS Account](https://portal.aws.amazon.com/billing/signup?redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start). if you do not already have one and log in. The IAM user that you use must have sufficient permissions to make necessary AWS service calls and manage AWS  resources.
+- AWS [CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) installed and configured
+- Code repo [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) Installed
+- AWS Serverless Application Model [AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) installed
 
 # Reference Architecture
 The following architecture diagram shows the end to end integration flow.
