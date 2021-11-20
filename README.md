@@ -22,15 +22,15 @@ The following architecture diagram shows the end to end integration flow.
  
 
 # Deployment Instructions
-1.	Create a new directory, navigate to that directory in a terminal and clone the GitHub repository:
-2.	Use `git clone` command https://github.com/hamdyt/apig-kinesis
-3.	Change directory to apig-kinesis directory:
-4.	From the command line, use AWS SAM to deploy the AWS resources for the pattern as specified in the template.yml file:
+-	Create a new directory, navigate to that directory in a terminal and clone the GitHub repository:
+-	Use `git clone` command https://github.com/hamdyt/apig-kinesis
+-	Change directory to apig-kinesis directory:
+-	From the command line, use AWS SAM to deploy the AWS resources for the pattern as specified in the template.yml file:
           `sam deploy --guided`
-6.	During the prompts:
-o   	    Enter a stack name
-o	    Enter the desired AWS Region
-o	    Allow SAM CLI to create IAM roles with the required permissions.
+	During the prompts:
+-   	    Enter a stack name
+-	    Enter the desired AWS Region
+-	    Allow SAM CLI to create IAM roles with the required permissions.
 Once you have run sam deploy -guided mode once and saved arguments to a configuration file (samconfig.toml), you can use sam deploy in future to use these defaults.
 7.	Note the outputs from the SAM deployment process. These contain the resource names and/or ARNs which are used for testing.
 
