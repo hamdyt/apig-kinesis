@@ -26,9 +26,9 @@ The following architecture diagram shows the end to end integration flow.
 2.	Use `git clone` command https://github.com/hamdyt/apig-kinesis
 3.	Change directory to apig-kinesis directory:
 4.	From the command line, use AWS SAM to deploy the AWS resources for the pattern as specified in the template.yml file:
-5.	sam deploy --guided
+          `sam deploy --guided`
 6.	During the prompts:
-o   	Enter a stack name
+o   	    Enter a stack name
 o	    Enter the desired AWS Region
 o	    Allow SAM CLI to create IAM roles with the required permissions.
 Once you have run sam deploy -guided mode once and saved arguments to a configuration file (samconfig.toml), you can use sam deploy in future to use these defaults.
