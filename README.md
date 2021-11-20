@@ -15,7 +15,8 @@ Important: this application uses various AWS services and there are costs associ
 
 # Reference Architecture
 The following architecture diagram shows the end to end integration flow.
-![image](C:\Users\eedhamd\Documents\GitHub\azurebootcamp2016\cohort-diagram)
+![image](https://user-images.githubusercontent.com/20010017/142718926-6b0647b6-78c7-47fc-8ed5-433e0cf9ff64.png)
+
 
 
  
