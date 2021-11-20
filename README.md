@@ -38,6 +38,7 @@ The sam deploy command creates several resources. One of the resources is an S3 
 Please follow the instructions found here to upload the client objects
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html
 
+
 # Testing
 Use CloudFront to test the application by going to https://<cloudfront domain name>/index.html. You should see the following screen
 	
