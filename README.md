@@ -15,7 +15,8 @@ Requirements
 Reference Architecture
 The following architecture diagram shows the end to end integration flow.
 
-![image](https://user-images.githubusercontent.com/20010017/142715913-1d28a28e-5356-4d03-b1c0-aea101aa77b3.png)
+![image](https://user-images.githubusercontent.com/20010017/142716013-7ec5a221-4c19-40de-a3a6-218b06248781.png)
+
 
  
 
@@ -39,6 +40,7 @@ https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html
 
 Testing
 Use CloudFront to test the application by going to https://<cloudfront domain name>/index.html. You should see the following screen
+	
   ![image](https://user-images.githubusercontent.com/20010017/142715925-709d3b4b-28a2-44a0-8715-def9203810ea.png)
 
  
