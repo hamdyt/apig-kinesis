@@ -23,7 +23,7 @@ The following architecture diagram shows the end to end integration flow.
 
 # Deployment Instructions
 1.	Create a new directory, navigate to that directory in a terminal and clone the GitHub repository:
-2.	git clone https://github.com/hamdyt/apig-kinesis
+2.	Use `git clone` command https://github.com/hamdyt/apig-kinesis
 3.	Change directory to apig-kinesis directory:
 4.	From the command line, use AWS SAM to deploy the AWS resources for the pattern as specified in the template.yml file:
 5.	sam deploy --guided
