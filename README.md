@@ -15,7 +15,8 @@ Important: this application uses various AWS services and there are costs associ
 
 # Reference Architecture
 The following architecture diagram shows the end to end integration flow.
-![image](https://user-images.githubusercontent.com/20010017/142718926-6b0647b6-78c7-47fc-8ed5-433e0cf9ff64.png)
+![image](https://user-images.githubusercontent.com/20010017/142754699-be66d70d-8998-4bb9-b338-61f59c0c8700.png)
+
 
 
 
