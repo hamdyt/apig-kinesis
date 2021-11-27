@@ -132,7 +132,7 @@ Resources:
       TimeToLiveSpecification:
         AttributeName: TimeToLive
         Enabled: 'TRUE'
-  
+        
   KinesisDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -160,7 +160,7 @@ Resources:
             Cookies:
               Forward: none
           ViewerProtocolPolicy: allow-all
-
+          
 Outputs:
   # Kinesis Data Stream name for data producers to use
   KinesisStream:
