@@ -4,6 +4,12 @@ Description: API Gateway to Kinesis Data Stream to AWS Lambda
 
 # This template builds integration between API Gateway, Kinesis data streams and AWS Lambda
 
+Parameters: 
+ soccerTableName: 
+  Type: String
+  Default: "SoccerPlayersStream"
+  Description: "Name of the soccer players dynamodb table"
+  
 Globals:
   Function:
     MemorySize: 512
@@ -115,11 +121,12 @@ Resources:
                 - /*
       Bucket: !Ref S3Bucket
   
-  DynamoDBTable:
+  DynamoDBSoccerTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: SoccerPlayersStream
-      # A list of attributes that describe the key schema for the DynamoDB table.
+      TableName:
+        Ref: soccerTableName
+       # A list of attributes that describe the key schema for the DynamoDB table.
       AttributeDefinitions:
         - AttributeName: pk
           AttributeType: S
@@ -133,6 +140,57 @@ Resources:
         AttributeName: TimeToLive
         Enabled: 'TRUE'
         
+  
+  SoccerTableWriteCapacityScalableTarget: 
+    Type: "AWS::ApplicationAutoScaling::ScalableTarget"
+    Properties: 
+     MaxCapacity: 100
+     MinCapacity: 5
+     ResourceId: !Sub table/${soccerTableName}
+     RoleARN: !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable
+     ScalableDimension: "dynamodb:table:WriteCapacityUnits"
+     ServiceNamespace: dynamodb
+    DependsOn: DynamoDBSoccerTable
+    
+  SoccerTableWriteScalingPolicy: 
+   Type: "AWS::ApplicationAutoScaling::ScalingPolicy"
+   Properties: 
+    PolicyName: WriteAutoScalingPolicy
+    PolicyType: TargetTrackingScaling
+    ScalingTargetId: 
+     Ref: SoccerTableWriteCapacityScalableTarget
+    TargetTrackingScalingPolicyConfiguration: 
+     TargetValue: 70
+     ScaleInCooldown: 60
+     ScaleOutCooldown: 60
+     PredefinedMetricSpecification: 
+      PredefinedMetricType: DynamoDBWriteCapacityUtilization
+  
+  SoccerTableReadCapacityScalableTarget: 
+   Type: "AWS::ApplicationAutoScaling::ScalableTarget"
+   Properties: 
+    MaxCapacity: 100
+    MinCapacity: 5
+    ResourceId: !Sub table/${soccerTableName}
+    RoleARN: !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable
+    ScalableDimension: "dynamodb:table:ReadCapacityUnits"
+    ServiceNamespace: dynamodb
+   DependsOn: DynamoDBSoccerTable
+
+  SoccerTableReadScalingPolicy: 
+   Type: "AWS::ApplicationAutoScaling::ScalingPolicy"
+   Properties: 
+    PolicyName: ReadAutoScalingPolicy
+    PolicyType: TargetTrackingScaling
+    ScalingTargetId: 
+     Ref: SoccerTableReadCapacityScalableTarget
+    TargetTrackingScalingPolicyConfiguration: 
+     TargetValue: 70
+     ScaleInCooldown: 60
+     ScaleOutCooldown: 60
+     PredefinedMetricSpecification: 
+      PredefinedMetricType: DynamoDBReadCapacityUtilization
+  
   KinesisDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
