@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: API Gateway to Kinesis Data Stream to AWS Lambda
+Description: API Gateway to Kinesis Data Stream to AWS Lambda Integration
 
 # This template builds integration between API Gateway, Kinesis data streams and AWS Lambda
 
