@@ -96,6 +96,7 @@ Resources:
   
   S3Bucket:
     Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
     Properties:
       WebsiteConfiguration:
         IndexDocument: index.html
@@ -196,10 +197,10 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-        - DomainName: sam-pipeline-kinesis.s3.us-east-1.amazonaws.com
+        - DomainName: serverless-capstone.s3.us-east-1.amazonaws.com
           Id: S3BucketOrigin
           S3OriginConfig:
-            OriginAccessIdentity: origin-access-identity/cloudfront/E36GDYVB54RFJ3
+            OriginAccessIdentity: origin-access-identity/cloudfront/E20VFMRKQ9DBG5
         Enabled: 'true'
         Comment: Kinesis Cloudfront distribution with S3 Origin
         DefaultRootObject: index.html
