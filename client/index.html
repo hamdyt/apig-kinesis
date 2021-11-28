@@ -22,14 +22,29 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    let baseURI = 'https://ngbd3p7r1b.execute-api.us-east-1.amazonaws.com/dev/';
 $(document).ready(function(){
+    
+
   $("#btnPublish").click(function(){
 
     $("#publishOutput").text('');
-    let input = `{  "Data": "${$("#data").val()}", "PartitionKey": "${$("#partitionKey").val()}" }`;
+    $("#putRecordError").text('');
+
+    let data = $("#data").val();
+    let partitionKey = $("#partitionKey").val();
+    
+ 
+    if (partitionKey == '' || data == '') {
+        $("#putRecordError").text('Please enter the Partition Key and Data');
+  
+        return;
+    }
+
+    let input = `{  "Data": "${data}", "PartitionKey": "${partitionKey}" }`;
     console.log(input);
 
-    let url = `https://jbqx7gj90d.execute-api.us-east-1.amazonaws.com/dev/streams/${$("#streamName").val()}/record`;
+    let url = `${baseURI}/streams/${$("#streamName").val()}/record`;
     
     $.ajax({
     type: 'PUT',
@@ -46,7 +61,6 @@ $(document).ready(function(){
         
         document.getElementById('publishOutput').innerHTML = output;
 
-        // $("#publishOutput").text(output);
     }).fail(function (msg) {
         console.log('FAIL');
     });
@@ -74,24 +88,23 @@ async function getKinesisRecordsFromDynamoDB() {
 }   
 
 async function getDataFromDynamoDB() {
-    let result;
+    let result = '';
     let tableName = 'KinesisStreamData';
 
-    let url = `https://jbqx7gj90d.execute-api.us-east-1.amazonaws.com/dev/dynamodb?table-name=${$("#streamName").val()}`
+    let url = `${baseURI}/dynamodb?table-name=${$("#streamName").val()}`
 
     console.log(url);
 
-    try {
-        result = await $.ajax({
-            url: url,
-            type: 'GET',
-            contentType: 'application/json'
-        });
+    result = await $.ajax({
+        url: url,
+        type: 'GET',
+        contentType: 'application/json'
+    }).fail(function (error) {
+        console.log(error);
+    });
 
-        return result;
-    } catch (error) {
-        console.error(error);
-    }
+    return result;
+   
 }
 function buildTable(data){
     $('#myTable').text('');
@@ -102,6 +115,7 @@ function buildTable(data){
         var row = `<tr>
                         <td>${data[i].partitionKey.S}</td>
                         <td>${data[i].data.S}</td>
+                        <td>${data[i].ranking.N}</td>
                         <td>${new Date(data[i].creationTime.N *1000).toUTCString()}</td>
                     </tr>`
         table.innerHTML += row
@@ -137,14 +151,14 @@ function buildTable(data){
                 <textarea class="form-control" rows="4" id="data" name="text"></textarea>
             </div>
             <button type="button" id="btnPublish" class="btn btn-primary">Publish</button>
-            <div class="mb-3 mt-3" id="publishOutput">
-              
+            <div class="mb-3 mt-3" id="publishOutput"></div>
+            <div class="mb-3 mt-3 text-danger" id="putRecordError"></div>
 
             </div>
         </div>
 
         <div class="container p-2 my-2 mt-4  border-top border-bottom border-secondary">
-            <h3>Get Records from Kinesis</h3>
+            <h3>Read from DynamoDB</h3>
            
             
             <button type="button" id="btnGetRecords" class="btn btn-primary">Read</button>
@@ -157,6 +171,7 @@ function buildTable(data){
                     <tr>
                       <th>Partition Key</th>
                       <th>Data</th>
+                      <th>Ranking</th>
                       <th>Creation Time</th>
                     </tr>
                   </thead>

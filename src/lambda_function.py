@@ -35,7 +35,7 @@ def lambda_handler(event, context):
 			table = dynamodb.Table("SoccerPlayersStream")
 			# print(table.table_status)
 			
-			response = table.put_item(Item= {'pk': pk,'partitionKey':  partitionKey, 'data':  record, 'creationTime':  epochTime})
+			response = table.put_item(Item= {'pk': pk,'partitionKey':  partitionKey, 'data':  record,'ranking':  1, 'data':  record, 'creationTime':  epochTime})
 			# print(response)
 
 		print('Success')
